@@ -45,6 +45,7 @@ class SendMessage(command.ShowOne):
             '--cc',
             action='append',
             metavar='<cc>',
+            default=[],
             help='Carbon Copy recipient.\
                  To add multiple CC\'s specify this option multiple times'
         )
