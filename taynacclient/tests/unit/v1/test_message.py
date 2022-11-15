@@ -22,9 +22,10 @@ class MessageTest(utils.TestCase):
         self.cs = fakes.FakeClient()
 
     def test_send(self):
-        response = self.cs.message.send(subject="Test", body="Hi",
-                             recipient="jacob.aharon@unimelb.edu.au",
-                             cc=["jacob.aharon@unimelb.edu.au"])
+        response = self.cs.messages.send(
+            subject="Test", body="Hi",
+            recipient="bob@example.com",
+            cc=["jack@example.com"])
         self.cs.assert_called('POST', '/v1/message/')
         self.assertEqual(fakes.generic_message['backend_id'],
                          response.backend_id)

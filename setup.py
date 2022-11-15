@@ -9,14 +9,14 @@ entry_points = {
     ['taynac = taynacclient.osc.plugin'],
     'openstack.taynac.v1':
     [
-        'message send = taynacclient.osc.v1.message:SendMessage',
+        'message send = taynacclient.osc.v1.messages:SendMessage',
     ]
 }
 
 
 setuptools.setup(
     name='taynacclient',
-    version='0.1.2',
+    version='0.9.0',
     description=('Client for the taynac system'),
     author='Sam Morrison',
     author_email='sorrison@gmail.com',

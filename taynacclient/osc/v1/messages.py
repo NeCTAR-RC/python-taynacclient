@@ -56,10 +56,10 @@ class SendMessage(command.ShowOne):
         self.log.debug('take_action(%s)', parsed_args)
         client = self.app.client_manager.taynac
         try:
-            data = client.message.send(parsed_args.subject,
-                                       parsed_args.body,
-                                       parsed_args.recipient,
-                                       parsed_args.cc)
+            data = client.messages.send(parsed_args.subject,
+                                        parsed_args.body,
+                                        parsed_args.recipient,
+                                        parsed_args.cc)
         except Exception as ex:
             raise exceptions.CommandError(str(ex))
 

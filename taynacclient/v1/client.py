@@ -13,7 +13,7 @@
 
 from taynacclient import client
 from taynacclient import exceptions
-from taynacclient.v1 import message
+from taynacclient.v1 import messages
 
 
 class Client(object):
@@ -30,4 +30,4 @@ class Client(object):
                 message='Session is required argument')
         self.http_client = client.SessionClient(
             session, service_type=service_type, **kwargs)
-        self.message = message.MessageManager(self.http_client)
+        self.messages = messages.MessageManager(self.http_client)

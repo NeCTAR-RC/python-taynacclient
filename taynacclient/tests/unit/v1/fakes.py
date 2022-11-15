@@ -23,7 +23,7 @@ from taynacclient import client as base_client
 from taynacclient.tests.unit import fakes
 from taynacclient.tests.unit import utils
 from taynacclient.v1 import client
-from taynacclient.v1 import message
+from taynacclient.v1 import messages
 
 
 # regex to compare callback to result of get_endpoint()
@@ -46,7 +46,7 @@ class FakeClient(fakes.FakeClient, client.Client):
     def __init__(self, *args, **kwargs):
         client.Client.__init__(self, session=mock.Mock())
         self.http_client = FakeSessionClient(**kwargs)
-        self.message = message.MessageManager(self.http_client)
+        self.messages = messages.MessageManager(self.http_client)
 
 
 class FakeSessionClient(base_client.SessionClient):
