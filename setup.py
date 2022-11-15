@@ -16,7 +16,7 @@ entry_points = {
 
 setuptools.setup(
     name='taynacclient',
-    version='0.9.0',
+    version='0.9.1',
     description=('Client for the taynac system'),
     author='Sam Morrison',
     author_email='sorrison@gmail.com',

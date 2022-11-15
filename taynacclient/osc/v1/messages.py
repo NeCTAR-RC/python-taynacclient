@@ -17,7 +17,7 @@ from taynacclient import exceptions
 
 
 class SendMessage(command.ShowOne):
-    """Send message."""
+    """Send message"""
 
     log = logging.getLogger(__name__ + '.SendMessage')
 
