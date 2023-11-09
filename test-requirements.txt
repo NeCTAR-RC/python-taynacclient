@@ -1,7 +1,5 @@
 testrepository
-hacking
 coverage
-requests-mock
 testtools
 stestr
-mock
+requests-mock

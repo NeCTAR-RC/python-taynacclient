@@ -2,4 +2,5 @@ oslo.utils
 requests
 keystoneauth1
 osc-lib
+nectarclient-lib
 pbr

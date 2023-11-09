@@ -11,17 +11,13 @@
 #    under the License.
 
 import re
+from unittest import mock
+from urllib import parse
 
-try:
-    from unittest import mock
-except ImportError:
-    import mock
-
-from six.moves.urllib import parse
+from nectarclient_lib.tests.unit import fakes
+from nectarclient_lib.tests.unit import utils
 
 from taynacclient import client as base_client
-from taynacclient.tests.unit import fakes
-from taynacclient.tests.unit import utils
 from taynacclient.v1 import client
 from taynacclient.v1 import messages
 

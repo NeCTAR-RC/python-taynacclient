@@ -11,8 +11,9 @@
 #   under the License.
 #
 
+from nectarclient_lib import exceptions
+
 from taynacclient import client
-from taynacclient import exceptions
 from taynacclient.v1 import messages
 
 

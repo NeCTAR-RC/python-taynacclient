@@ -11,9 +11,8 @@
 #   under the License.
 #
 from keystoneauth1 import adapter
+from nectarclient_lib import exceptions
 from oslo_utils import importutils
-
-from taynacclient import exceptions
 
 
 def Client(version, *args, **kwargs):
@@ -26,7 +25,7 @@ def Client(version, *args, **kwargs):
 class SessionClient(adapter.Adapter):
 
     client_name = 'python-taynacclient'
-    client_version = '0.9.1'
+    client_version = '1.0.0'
 
     def request(self, url, method, **kwargs):
         kwargs.setdefault('headers', kwargs.get('headers', {}))

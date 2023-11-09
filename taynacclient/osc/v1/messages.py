@@ -12,8 +12,8 @@
 #
 
 import logging
+from nectarclient_lib import exceptions
 from osc_lib.command import command
-from taynacclient import exceptions
 
 
 class SendMessage(command.ShowOne):

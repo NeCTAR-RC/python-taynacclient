@@ -11,7 +11,7 @@
 #   under the License.
 #
 
-from taynacclient import base
+from nectarclient_lib import base
 
 
 class Message(base.Resource):

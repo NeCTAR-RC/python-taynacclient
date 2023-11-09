@@ -11,7 +11,8 @@
 #   under the License.
 #
 
-from taynacclient.tests.unit import utils
+from nectarclient_lib.tests.unit import utils
+
 from taynacclient.tests.unit.v1 import fakes
 
 
