@@ -25,7 +25,7 @@ def Client(version, *args, **kwargs):
 class SessionClient(adapter.Adapter):
 
     client_name = 'python-taynacclient'
-    client_version = '1.1.0'
+    client_version = '1.2.0'
 
     def request(self, url, method, **kwargs):
         kwargs.setdefault('headers', kwargs.get('headers', {}))
