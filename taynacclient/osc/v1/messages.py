@@ -33,24 +33,41 @@ class SendMessage(command.ShowOne):
             '--subject',
             metavar='<subject>',
             required=True,
-            help="Email subject"
+            help="Email subject."
         )
         parser.add_argument(
             '--body',
             required=True,
             metavar='<body>',
-            help='Email body',
+            help='Email body.',
         )
         parser.add_argument(
             '--cc',
             action='append',
             metavar='<cc>',
             default=[],
-            help='Carbon Copy recipient.\
-                 To add multiple CC\'s specify this option multiple times'
+            help='Carbon Copy recipient. \
+                 To add multiple CCs specify this option multiple times.'
         )
-
-        return parser
+        parser.add_argument(
+            '--tag',
+            action='append',
+            metavar='<tag>',
+            dest='tags',
+            default=[],
+            help='Freshdesk tag. \
+                 To add multiple tags specify this option multiple times'
+        )
+        parser.add_argument(
+            '--backend-id',
+            default=None,
+            metavar='<backend-id>',
+            dest='backend_id',
+            help='A backend-id for a previous user notification. '
+                 'If this is provided, this message is a reply. '
+                 'Some other options may be ignored by the '
+                 'the user notification service backend.'
+        )
 
     def take_action(self, parsed_args):
         self.log.debug('take_action(%s)', parsed_args)
@@ -59,7 +76,9 @@ class SendMessage(command.ShowOne):
             data = client.messages.send(parsed_args.subject,
                                         parsed_args.body,
                                         parsed_args.recipient,
-                                        parsed_args.cc)
+                                        parsed_args.cc,
+                                        parsed_args.tags,
+                                        parsed_args.backend_id)
         except Exception as ex:
             raise exceptions.CommandError(str(ex))
 
