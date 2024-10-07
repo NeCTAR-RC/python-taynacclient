@@ -1,38 +1,16 @@
-#!/usr/bin/env python
+#
+#    Licensed under the Apache License, Version 2.0 (the "License"); you may
+#    not use this file except in compliance with the License. You may obtain
+#    a copy of the License at
+#
+#         http://www.apache.org/licenses/LICENSE-2.0
+#
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#    License for the specific language governing permissions and limitations
+#    under the License.
 
 import setuptools
 
-from pbr.packaging import parse_requirements
-
-entry_points = {
-    'openstack.cli.extension':
-    ['taynac = taynacclient.osc.plugin'],
-    'openstack.taynac.v1':
-    [
-        'message send = taynacclient.osc.v1.messages:SendMessage',
-    ]
-}
-
-
-setuptools.setup(
-    name='taynacclient',
-    version='1.3.0',
-    description=('Client for the taynac system'),
-    author='Sam Morrison',
-    author_email='sorrison@gmail.com',
-    url='https://github.com/NeCTAR-RC/python-taynacclient',
-    packages=[
-        'taynacclient',
-    ],
-    include_package_data=True,
-    setup_requires=['pbr>=3.0.0'],
-    install_requires=parse_requirements(),
-    license="Apache",
-    zip_safe=False,
-    classifiers=(
-        'License :: OSI Approved :: Apache Software License',
-        'Programming Language :: Python :: 3',
-        'Operating System :: OS Independent',
-    ),
-    entry_points=entry_points,
-)
+setuptools.setup(setup_requires=["pbr>=2.0.0"], pbr=True)
