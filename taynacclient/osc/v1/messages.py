@@ -22,18 +22,18 @@ class SendMessage(command.ShowOne):
     log = logging.getLogger(__name__ + '.SendMessage')
 
     def get_parser(self, prog_name):
-        parser = super(SendMessage, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.add_argument(
             '--recipient',
             required=True,
             metavar='<recipient>',
-            help="Email address of the recipient"
+            help="Email address of the recipient",
         )
         parser.add_argument(
             '--subject',
             metavar='<subject>',
             required=True,
-            help="Email subject."
+            help="Email subject.",
         )
         parser.add_argument(
             '--body',
@@ -47,7 +47,7 @@ class SendMessage(command.ShowOne):
             metavar='<cc>',
             default=[],
             help='Carbon Copy recipient. \
-                 To add multiple CCs specify this option multiple times.'
+                 To add multiple CCs specify this option multiple times.',
         )
         parser.add_argument(
             '--tag',
@@ -56,7 +56,7 @@ class SendMessage(command.ShowOne):
             dest='tags',
             default=[],
             help='Freshdesk tag. \
-                 To add multiple tags specify this option multiple times'
+                 To add multiple tags specify this option multiple times',
         )
         parser.add_argument(
             '--backend-id',
@@ -64,21 +64,23 @@ class SendMessage(command.ShowOne):
             metavar='<backend-id>',
             dest='backend_id',
             help='A backend-id for a previous user notification. '
-                 'If this is provided, this message is a reply. '
-                 'Some other options may be ignored by the '
-                 'the user notification service backend.'
+            'If this is provided, this message is a reply. '
+            'Some other options may be ignored by the '
+            'the user notification service backend.',
         )
 
     def take_action(self, parsed_args):
         self.log.debug('take_action(%s)', parsed_args)
         client = self.app.client_manager.taynac
         try:
-            data = client.messages.send(parsed_args.subject,
-                                        parsed_args.body,
-                                        parsed_args.recipient,
-                                        parsed_args.cc,
-                                        parsed_args.tags,
-                                        parsed_args.backend_id)
+            data = client.messages.send(
+                parsed_args.subject,
+                parsed_args.body,
+                parsed_args.recipient,
+                parsed_args.cc,
+                parsed_args.tags,
+                parsed_args.backend_id,
+            )
         except Exception as ex:
             raise exceptions.CommandError(str(ex))
 

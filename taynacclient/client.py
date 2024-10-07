@@ -18,14 +18,13 @@ import taynacclient
 
 
 def Client(version, *args, **kwargs):
-    module = 'taynacclient.v%s.client' % version
+    module = f'taynacclient.v{version}.client'
     module = importutils.import_module(module)
     client_class = getattr(module, 'Client')
     return client_class(*args, **kwargs)
 
 
 class SessionClient(adapter.Adapter):
-
     client_name = 'python-taynacclient'
     client_version = taynacclient.__version__
 
@@ -34,10 +33,7 @@ class SessionClient(adapter.Adapter):
         # NOTE(sorrison): The standard call raises errors from
         # keystoneauth, where we need to raise the taynacclient errors.
         raise_exc = kwargs.pop('raise_exc', True)
-        resp = super(SessionClient, self).request(url,
-                                                  method,
-                                                  raise_exc=False,
-                                                  **kwargs)
+        resp = super().request(url, method, raise_exc=False, **kwargs)
 
         if raise_exc and resp.status_code >= 400:
             raise exceptions.from_response(resp, url, method)

@@ -25,8 +25,7 @@ from taynacclient.v1 import messages
 # regex to compare callback to result of get_endpoint()
 # checks version number (vX or vX.X where X is a number)
 # and also checks if the id is on the end
-ENDPOINT_RE = re.compile(
-    r"^get_http:__taynac_api:8775_v\d(_\d)?_\w{32}$")
+ENDPOINT_RE = re.compile(r"^get_http:__taynac_api:8775_v\d(_\d)?_\w{32}$")
 
 # accepts formats like v2 or v2.1
 ENDPOINT_TYPE_RE = re.compile(r"^v\d(\.\d)?$")
@@ -38,7 +37,6 @@ generic_message = {'backend_id': '1895'}
 
 
 class FakeClient(fakes.FakeClient, client.Client):
-
     def __init__(self, *args, **kwargs):
         client.Client.__init__(self, session=mock.Mock())
         self.http_client = FakeSessionClient(**kwargs)
@@ -46,9 +44,7 @@ class FakeClient(fakes.FakeClient, client.Client):
 
 
 class FakeSessionClient(base_client.SessionClient):
-
     def __init__(self, *args, **kwargs):
-
         self.callstack = []
         self.visited = []
         self.auth = mock.Mock()
@@ -92,25 +88,29 @@ class FakeSessionClient(base_client.SessionClient):
             munged_url = munged_url.replace('@', '_')
             munged_url = munged_url.replace('%20', '_')
             munged_url = munged_url.replace('%3A', '_')
-            callback = "%s_%s" % (method.lower(), munged_url)
+            callback = f"{method.lower()}_{munged_url}"
 
         if not hasattr(self, callback):
-            raise AssertionError('Called unknown API method: %s %s, '
-                                 'expected fakes method name: %s' %
-                                 (method, url, callback))
+            raise AssertionError(
+                f'Called unknown API method: {method} {url}, '
+                f'expected fakes method name: {callback}'
+            )
 
         # Note the call
         self.visited.append(callback)
-        self.callstack.append((method, url, kwargs.get('data'),
-                               kwargs.get('params')))
+        self.callstack.append(
+            (method, url, kwargs.get('data'), kwargs.get('params'))
+        )
 
         status, headers, data = getattr(self, callback)(**kwargs)
 
-        r = utils.TestResponse({
-            "status_code": status,
-            "text": data,
-            "headers": headers,
-        })
+        r = utils.TestResponse(
+            {
+                "status_code": status,
+                "text": data,
+                "headers": headers,
+            }
+        )
         return r, data
 
     def post_v1_message(self, **kw):

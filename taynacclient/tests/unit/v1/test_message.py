@@ -16,39 +16,52 @@ from taynacclient.tests.unit.v1 import fakes
 
 
 class MessageTest(utils.TestCase):
-
     def setUp(self):
-        super(MessageTest, self).setUp()
+        super().setUp()
         self.cs = fakes.FakeClient()
 
     def test_send(self):
         response = self.cs.messages.send(
-            subject="Test", body="Hi",
+            subject="Test",
+            body="Hi",
             recipient="bob@example.com",
-            cc=["jack@example.com"])
-        self.cs.assert_called('POST', '/v1/message/',
-                              data=('{"subject": "Test", "body": "Hi", '
-                                    ' "recipient": "bob@example.com", '
-                                    ' "cc": ["jack@example.com"]}'
-                                    ))
-        self.assertEqual(fakes.generic_message['backend_id'],
-                         response.backend_id)
+            cc=["jack@example.com"],
+        )
+        self.cs.assert_called(
+            'POST',
+            '/v1/message/',
+            data=(
+                '{"subject": "Test", "body": "Hi", '
+                ' "recipient": "bob@example.com", '
+                ' "cc": ["jack@example.com"]}'
+            ),
+        )
+        self.assertEqual(
+            fakes.generic_message['backend_id'], response.backend_id
+        )
 
     def test_send_extra(self):
         response = self.cs.messages.send(
-            subject="Test", body="Hi",
+            subject="Test",
+            body="Hi",
             recipient="bob@example.com",
             cc=["jack@example.com"],
             tags=["one", "two"],
-            backend_id="1234")
-        self.cs.assert_called('POST', '/v1/message/',
-                              data=('{"subject": "Test", '
-                                    ' "body": "Hi", '
-                                    ' "recipient": "bob@example.com", '
-                                    ' "cc": ["jack@example.com"], '
-                                    ' "tags": ["one", "two"], '
-                                    ' "backend_id": "1234"'
-                                    '}'
-                                    ))
-        self.assertEqual(fakes.generic_message['backend_id'],
-                         response.backend_id)
+            backend_id="1234",
+        )
+        self.cs.assert_called(
+            'POST',
+            '/v1/message/',
+            data=(
+                '{"subject": "Test", '
+                ' "body": "Hi", '
+                ' "recipient": "bob@example.com", '
+                ' "cc": ["jack@example.com"], '
+                ' "tags": ["one", "two"], '
+                ' "backend_id": "1234"'
+                '}'
+            ),
+        )
+        self.assertEqual(
+            fakes.generic_message['backend_id'], response.backend_id
+        )

@@ -15,23 +15,24 @@ from nectarclient_lib import base
 
 
 class Message(base.Resource):
-
     def __repr__(self):
-        return "<Message %s>" % self._info
+        return f"<Message {self._info}>"
 
 
 class MessageManager(base.Manager):
-
     base_url = 'v1/message'
     resource_class = Message
 
-    def send(self, subject, body, recipient, cc=[], tags=[],
-             backend_id=None):
-        data = {'subject': subject, 'body': body,
-                'recipient': recipient, 'cc': cc}
+    def send(self, subject, body, recipient, cc=[], tags=[], backend_id=None):
+        data = {
+            'subject': subject,
+            'body': body,
+            'recipient': recipient,
+            'cc': cc,
+        }
         if tags:
             data['tags'] = tags
         if backend_id:
             data['backend_id'] = backend_id
-        url = '/%s/' % (self.base_url)
+        url = f'/{self.base_url}/'
         return self._post(url, data=data)
