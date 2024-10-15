@@ -68,6 +68,7 @@ class SendMessage(command.ShowOne):
             'Some other options may be ignored by the '
             'the user notification service backend.',
         )
+        return parser
 
     def take_action(self, parsed_args):
         self.log.debug('take_action(%s)', parsed_args)
