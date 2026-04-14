@@ -12,6 +12,8 @@
 #
 
 import logging
+import os
+
 from nectarclient_lib import exceptions
 from osc_lib.command import command
 
@@ -35,11 +37,17 @@ class SendMessage(command.ShowOne):
             required=True,
             help="Email subject.",
         )
-        parser.add_argument(
+        body_group = parser.add_mutually_exclusive_group(required=True)
+        body_group.add_argument(
             '--body',
-            required=True,
             metavar='<body>',
-            help='Email body.',
+            help='Email body as a string.',
+        )
+        body_group.add_argument(
+            '--body-file',
+            metavar='<body-file>',
+            dest='body_file',
+            help='Path to a file containing the email body.',
         )
         parser.add_argument(
             '--cc',
@@ -73,10 +81,16 @@ class SendMessage(command.ShowOne):
     def take_action(self, parsed_args):
         self.log.debug('take_action(%s)', parsed_args)
         client = self.app.client_manager.taynac
+        if parsed_args.body_file:
+            body_file = os.path.expanduser(parsed_args.body_file)
+            with open(body_file) as f:
+                body = f.read()
+        else:
+            body = parsed_args.body
         try:
             data = client.messages.send(
                 parsed_args.subject,
-                parsed_args.body,
+                body,
                 parsed_args.recipient,
                 parsed_args.cc,
                 parsed_args.tags,
