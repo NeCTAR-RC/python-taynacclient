@@ -33,7 +33,11 @@ ENDPOINT_TYPE_RE = re.compile(r"^v\d(\.\d)?$")
 # accepts formats like v2 or v2_1
 CALLBACK_RE = re.compile(r"^get_http:__taynac_api:8775_v\d(_\d)?$")
 
-generic_message = {'backend_id': '1895'}
+generic_message = {
+    'backend_id': '1895',
+    'recipient': 'bob@example.com',
+    'cc': [],
+}
 
 
 class FakeClient(fakes.FakeClient, client.Client):

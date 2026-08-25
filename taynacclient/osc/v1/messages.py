@@ -25,11 +25,20 @@ class SendMessage(command.ShowOne):
 
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
-        parser.add_argument(
+        recipient_group = parser.add_mutually_exclusive_group(required=True)
+        recipient_group.add_argument(
             '--recipient',
-            required=True,
             metavar='<recipient>',
             help="Email address of the recipient",
+        )
+        recipient_group.add_argument(
+            '--project-id',
+            metavar='<project-id>',
+            dest='project_id',
+            help='ID of a keystone project to notify. The service '
+            'resolves the recipients itself: the first tenant manager '
+            'becomes the recipient and other tenant managers and '
+            'members are cc\'d.',
         )
         parser.add_argument(
             '--subject',
@@ -89,12 +98,13 @@ class SendMessage(command.ShowOne):
             body = parsed_args.body
         try:
             data = client.messages.send(
-                parsed_args.subject,
-                body,
-                parsed_args.recipient,
-                parsed_args.cc,
-                parsed_args.tags,
-                parsed_args.backend_id,
+                subject=parsed_args.subject,
+                body=body,
+                recipient=parsed_args.recipient,
+                cc=parsed_args.cc,
+                tags=parsed_args.tags,
+                backend_id=parsed_args.backend_id,
+                project_id=parsed_args.project_id,
             )
         except Exception as ex:
             raise exceptions.CommandError(str(ex))
