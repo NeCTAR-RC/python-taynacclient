@@ -40,6 +40,44 @@ class MessageTest(utils.TestCase):
             fakes.generic_message['backend_id'], response.backend_id
         )
 
+    def test_send_project_id(self):
+        response = self.cs.messages.send(
+            subject="Test",
+            body="Hi",
+            project_id="abc123",
+        )
+        self.cs.assert_called(
+            'POST',
+            '/v1/message/',
+            data=(
+                '{"subject": "Test", "body": "Hi",  "project_id": "abc123"}'
+            ),
+        )
+        self.assertEqual(
+            fakes.generic_message['backend_id'], response.backend_id
+        )
+        self.assertEqual(
+            fakes.generic_message['recipient'], response.recipient
+        )
+
+    def test_send_recipient_and_project_id_raises(self):
+        self.assertRaises(
+            ValueError,
+            self.cs.messages.send,
+            subject="Test",
+            body="Hi",
+            recipient="bob@example.com",
+            project_id="abc123",
+        )
+
+    def test_send_neither_recipient_nor_project_id_raises(self):
+        self.assertRaises(
+            ValueError,
+            self.cs.messages.send,
+            subject="Test",
+            body="Hi",
+        )
+
     def test_send_extra(self):
         response = self.cs.messages.send(
             subject="Test",

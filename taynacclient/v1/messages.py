@@ -23,13 +23,29 @@ class MessageManager(base.Manager):
     base_url = 'v1/message'
     resource_class = Message
 
-    def send(self, subject, body, recipient, cc=[], tags=[], backend_id=None):
+    def send(
+        self,
+        subject,
+        body,
+        recipient=None,
+        cc=[],
+        tags=[],
+        backend_id=None,
+        project_id=None,
+    ):
+        if bool(recipient) == bool(project_id):
+            raise ValueError(
+                "Exactly one of recipient or project_id must be given"
+            )
         data = {
             'subject': subject,
             'body': body,
-            'recipient': recipient,
-            'cc': cc,
         }
+        if project_id:
+            data['project_id'] = project_id
+        else:
+            data['recipient'] = recipient
+            data['cc'] = cc
         if tags:
             data['tags'] = tags
         if backend_id:
