@@ -15,6 +15,7 @@ import logging
 import os
 
 from nectarclient_lib import exceptions
+from openstackclient.identity import common as identity_common
 from osc_lib.command import command
 
 
@@ -32,13 +33,20 @@ class SendMessage(command.ShowOne):
             help="Email address of the recipient",
         )
         recipient_group.add_argument(
+            '--project',
             '--project-id',
-            metavar='<project-id>',
-            dest='project_id',
-            help='ID of a keystone project to notify. The service '
+            metavar='<project>',
+            dest='project',
+            help='Keystone project (name or ID) to notify. The service '
             'resolves the recipients itself: the first tenant manager '
             'becomes the recipient and other tenant managers and '
             'members are cc\'d.',
+        )
+        parser.add_argument(
+            '--project-domain',
+            metavar='<project_domain>',
+            default='default',
+            help='Domain of the project (name or ID)',
         )
         parser.add_argument(
             '--subject',
@@ -96,6 +104,16 @@ class SendMessage(command.ShowOne):
                 body = f.read()
         else:
             body = parsed_args.body
+        project_id = None
+        if parsed_args.project:
+            identity_client = self.app.client_manager.identity
+            project_id = identity_common.find_project(
+                identity_client,
+                identity_common._get_token_resource(
+                    identity_client, 'project', parsed_args.project
+                ),
+                parsed_args.project_domain,
+            ).id
         try:
             data = client.messages.send(
                 subject=parsed_args.subject,
@@ -104,7 +122,7 @@ class SendMessage(command.ShowOne):
                 cc=parsed_args.cc,
                 tags=parsed_args.tags,
                 backend_id=parsed_args.backend_id,
-                project_id=parsed_args.project_id,
+                project_id=project_id,
             )
         except Exception as ex:
             raise exceptions.CommandError(str(ex))
